@@ -1,0 +1,4 @@
+msedge-selenium-tools==3.141.4
+selenium==3.141.0
+pandas==1.4.4
+numpy==1.21.5
