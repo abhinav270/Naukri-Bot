@@ -1,9 +1,3 @@
-"""
-Author : Abhinav Tyagi 
-
-Date : 28-Aug-2022 
-"""
-
 import pandas as pd
 from selenium import webdriver
 import random
@@ -172,7 +166,5 @@ for i,j in enumerate(jobs):
         Final = pd.concat([Report,report1],ignore_index=True)
         Final.drop_duplicates(subset = 'LINK',keep='first',ignore_index=True,inplace=True)
         Final.to_excel(os.path.join(os.getcwd(), 'Jobs\Job_Report.xlsx'),index=False)
-        
- 
 
-
+driver.quit()
