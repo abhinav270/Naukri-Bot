@@ -1,10 +1,22 @@
+"""
+Author : Abhinav Tyagi 
+
+Date : 28-Aug-2022 
+"""
+
+
+
+
+
 import pandas as pd
 from selenium import webdriver
 import random
 import os
 from time import sleep
 
-# Please update your credentials and resume headline
+os.chdir(r'C:\Users\tyagi\Documents\Naukri Bot')
+
+
 
 info = pd.read_excel(os.path.join(os.getcwd(), 'Credentials\Credentials.xlsx'))
 Resume = pd.read_excel(os.path.join(os.getcwd(),'Credentials\ResumeHeadline.xlsx'))
@@ -26,12 +38,18 @@ sleep(2)
 #Naukri Update Profile
 driver.get('https://www.naukri.com/mnjuser/profile?id=&altresid')
 
+#Chatbot
+try: 
+    driver.find_element_by_xpath('//*[@id="_4mwl2w02fNavbar"]/div').click()
+except:
+    print('no chat bot find')
+
 #HeadLine
 driver.find_element_by_xpath('//*[@id="lazyResumeHead"]/div/div/div/div[1]/span[2]').click()
 driver.find_element_by_id('resumeHeadlineTxt').clear()
 driver.find_element_by_id('resumeHeadlineTxt').send_keys(Resume['Headline'][random.randrange(0,len(Resume))])
 sleep(2)
-driver.find_element_by_xpath('/html/body/div[6]/div[7]/div[2]/form/div[3]/div/button').click()
+driver.find_element_by_xpath('/html/body/div[6]/div[4]/div[2]/form/div[3]/div/button').click()
 
 #Back to naukrijobs homepage
 try:
@@ -67,7 +85,7 @@ for i,j in enumerate(jobs):
         try:
             j.click()
         except Exception as e:
-            print(68,e)
+            print(e)
             
         
     p = driver.current_window_handle
@@ -124,13 +142,13 @@ for i,j in enumerate(jobs):
         report.loc[i,'NO. APPLICANTS'] = Applicants
         
     except Exception as e:
-        print(91,e)
+        print(e)
         driver.switch_to.window(driver.window_handles[0])
        
                
     #Lets Apply
     try:
-        driver.find_element_by_xpath('//*[@id="root"]/main/div[2]/div[2]/section[1]/div[1]/div[3]/div/button[2]').click()
+        driver.find_element_by_class_name('apply-button').click()
         driver.implicitly_wait(2)
         print('Applied')
         report.loc[i,'APPLY'] = 'APPLIED'
@@ -166,5 +184,19 @@ for i,j in enumerate(jobs):
         Final = pd.concat([Report,report1],ignore_index=True)
         Final.drop_duplicates(subset = 'LINK',keep='first',ignore_index=True,inplace=True)
         Final.to_excel(os.path.join(os.getcwd(), 'Jobs\Job_Report.xlsx'),index=False)
+        
+        #
+# job_list = Final.LINK.to_list()
+# num = 40
+# driver.switch_to.window(driver.window_handles[0])
+# for i,link in enumerate(job_list[num:num+20]):
+#     print(num+i)
+#     if(i==20):
+#         break
+#     driver.get(link)
+#     driver.execute_script("window.open('');")
+#     driver.switch_to.window(driver.window_handles[i+1])
+    
 
-driver.quit()
+
+
